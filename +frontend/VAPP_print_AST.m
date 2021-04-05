@@ -1,4 +1,4 @@
-function VAPP_print_AST(AST, str_utils, outfile_path)
+function VAPP_print_AST(AST, outfile_path)
 
     % This function pretty-prints the given AST, in a format similar to the 
     % Unix command "tree". If outfile_path is empty, it outputs to console. 
@@ -19,7 +19,7 @@ function VAPP_print_AST(AST, str_utils, outfile_path)
     end
 
     % display the root of the AST
-    root_str = AST_node_to_string(AST, str_utils);
+    root_str = AST_node_to_string(AST);
     disp_or_write_to_file(root_str, fid);
 
     % display all children
@@ -28,7 +28,7 @@ function VAPP_print_AST(AST, str_utils, outfile_path)
     for idx = 1:1:length(children)
         child = children{idx};
         is_last_child = (idx == length(children));
-        pprint_AST(child, prefix, is_last_child, str_utils, fid);
+        pprint_AST(child, prefix, is_last_child, fid);
     end
 
     if ~to_console
@@ -37,7 +37,7 @@ function VAPP_print_AST(AST, str_utils, outfile_path)
 
 end
 
-function out = AST_node_to_string(node, str_utils)
+function out = AST_node_to_string(node)
 
     Type = node.get_type();
 
@@ -45,7 +45,7 @@ function out = AST_node_to_string(node, str_utils)
     attr_names = sort(node.get_attr_names());
     for idx = 1:1:length(attr_names)
         key = attr_names{idx};
-        value = to_string(node.get_attr(key), str_utils);
+        value = to_string(node.get_attr(key));
         s = sprintf('%s: %s', key, value);
         strs = [strs, {s}];
     end
@@ -59,7 +59,7 @@ function out = AST_node_to_string(node, str_utils)
 
 end
 
-function out = to_string(x, str_utils)
+function out = to_string(x)
 
     if isfloat(x)
         if (abs(x) < 1000) && (ceil(x) - floor(x) < 1e-12)
@@ -74,7 +74,7 @@ function out = to_string(x, str_utils)
     elseif iscell(x)
         strs = {};
         for idx = 1:1:length(x)
-            s = to_string(x{idx}, str_utils);
+            s = to_string(x{idx});
             strs = [strs, {s}];
         end
         out = sprintf('{%s}', str_utils.join(', ', strs));
@@ -93,10 +93,10 @@ function out = to_string(x, str_utils)
 
 end
 
-function pprint_AST(node, prefix, is_last_child, str_utils, fid)
+function pprint_AST(node, prefix, is_last_child, fid)
 
     % convert node to string
-    node_str = AST_node_to_string(node, str_utils);
+    node_str = AST_node_to_string(node);
 
     % display the node
     if is_last_child
@@ -118,7 +118,7 @@ function pprint_AST(node, prefix, is_last_child, str_utils, fid)
     for idx = 1:1:length(children)
         child = children{idx};
         next_is_last_child = (idx == length(children));
-        pprint_AST(child, next_prefix, next_is_last_child, str_utils, fid);
+        pprint_AST(child, next_prefix, next_is_last_child, fid);
     end
 
 end

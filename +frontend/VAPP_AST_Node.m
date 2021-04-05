@@ -14,7 +14,7 @@ classdef VAPP_AST_Node < handle & matlab.mixin.Copyable
 % Author: Aadithya V. Karthik, A. Gokcen Mahmutoglu, Xufeng Wang
 % Last modified: Tue Feb 14, 2017  03:49PM
 %==============================================================================
-    properties (Access = private)
+    properties (Access = public)
         uniqID;
         parent;
         children;
