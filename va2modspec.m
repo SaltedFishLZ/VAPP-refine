@@ -124,7 +124,7 @@ function va2modspec(inFileName, varargin)
     tic;
 
     % create intermediate representation (IR) tree
-    ig = AstVisitorIrGenerator(Ast);
+    ig = AstVisitors.AstVisitorIrGenerator(Ast);
 
     module = ig.getModule;
 

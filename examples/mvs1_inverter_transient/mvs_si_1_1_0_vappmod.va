@@ -59,7 +59,7 @@ parameter integer 	type 		= 1 			from [-1 : 1] exclude 0;  		//	type of transist
 parameter real 		W          	= 1e-4 			from (0:inf);	        		//	Transistor width [cm]
 parameter real 		Lgdr 		= 80e-7 		from (0:inf);                   	//	Physical gate length [cm]. //	This is the designed gate length for litho printing.
 parameter real 		dLg 		= 10.5e-7 		from (0:inf);                   	//	Overlap length including both source and drain sides [cm]  
-parameter real 		Cg          	= 2.2e-6 		from (0:inf);                   	//	Gate-to-channel areal capacitance at the virtual source [F/cm^2]
+parameter real 		Cg         	= 2.2e-6 		from (0:inf);                   	//	Gate-to-channel areal capacitance at the virtual source [F/cm^2]
 parameter real		etov 		= 1.3e-3 		from (0:inf);                   	//	Equivalent thickness of dielectric at S/D-G overlap [cm]
 parameter real 		delta 		= 0.10 			from [0:inf);                   	//	Drain-induced-barrier-lowering (DIBL) [V/V]
 parameter real 		n0         	= 1.5 			from [0:inf);                   	// 	Subthreshold swing factor [unit-less] {typically between 1.0 and 2.0}
@@ -71,17 +71,17 @@ parameter real 		Cof 		= 2e-13 		from [0:inf);                   	//	Outer fring
 parameter real 		vxo 		= 0.765e7 		from (0:inf);                   	//	Virtual source injection velocity [cm/s]
 parameter real 		mu         	= 200 			from (0:inf);                   	//	Low-field mobility [cm^2/V.s]
 parameter real 		beta 		= 1.7 			from (0:inf);                   	//	Saturation factor. Typ. nFET=1.8, pFET=1.6
-parameter real      	Tjun       	= 298           	from [173:inf);                 	//  	Junction temperature [K]
+parameter real      Tjun       	= 298           from [173:inf);                 	//  	Junction temperature [K]
 parameter real 		phib 		= 1.2;                                          		//	~abs(2*phif)>0 [V]
 parameter real 		gamma 		= 0.0 			from [0:inf);                   	//	Body factor  [sqrt(V)]
 parameter real 		Vt0 		= 0.486;                                        		//	Strong inversion threshold voltage [V] 
 parameter real 		alpha 		= 3.5;                                          		//	Empirical parameter for threshold voltage shift between strong and weak inversion.
-parameter real 		mc          	= 0.2 			from [0.01 : 10];               	// 	Choose an appropriate value between 0.01 to 10 
+parameter real 		mc          = 0.2 			from [0.01 : 10];               	// 	Choose an appropriate value between 0.01 to 10 
                                                                                 			//	For, values outside of this range,convergence or accuracy of results is not guaranteed
-parameter integer	CTM_select 	= 1             	from [1 : inf);                		// 	If CTM_select = 1, then classic DD-NVSAT model is used
+parameter integer	CTM_select 	= 1             from [1 : inf);                		// 	If CTM_select = 1, then classic DD-NVSAT model is used
                                                                                 			//	For CTM_select other than 1,blended DD-NVSAT and ballistic charge transport model is used 
-parameter real 		CC 		= 0                 	from [0:inf);                   	//	Fitting parameter to adjust Vg-dependent inner fringe capacitances(Not used in this version)
-parameter real 		nd 		= 0                 	from [0:inf);                   	// 	Punch-through factor [1/V]
+parameter real 		CC 			= 0             from [0:inf);                   	//	Fitting parameter to adjust Vg-dependent inner fringe capacitances(Not used in this version)
+parameter real 		nd 			= 0             from [0:inf);                   	// 	Punch-through factor [1/V]
 parameter real		zeta		= 1.0			from (0:1];				// 	Energy-transfer factor
 
 `define  SMALL_VALUE  (1e-10)
@@ -104,36 +104,36 @@ analog begin
 	Vgsraw			=	type * ( V(g,si) );
 	Vgdraw			=	type * ( V(g,di) );
 	if (Vgsraw >= Vgdraw) begin
-		Vds		=	type * ( V(d,s) ); 
-		Vgs		=	type * ( V(g,s) );
-		Vbs		=	type * ( V(b,s) );
+		Vds			=	type * ( V(d,s) ); 
+		Vgs			=	type * ( V(g,s) );
+		Vbs			=	type * ( V(b,s) );
 		Vdsi		=	type * ( V(di,si) );
 		Vgsi		=	Vgsraw;
 		Vbsi		=	type * ( V(b,si) );
-		dir		=	1;
+		dir			=	1;
 	end
 	else begin
-		Vds		=	type * ( V(s,d) );
-		Vgs		=	type * ( V(g,d) );
-		Vbs		=	type * ( V(b,d) );
+		Vds			=	type * ( V(s,d) );
+		Vgs			=	type * ( V(g,d) );
+		Vbs			=	type * ( V(b,d) );
 		Vdsi		=	type * ( V(si,di) );
 		Vgsi		=	Vgdraw;
 		Vbsi		=	type * ( V(b,di) );
-		dir		=	-1;
+		dir			=	-1;
 	end
 
 
     //Parasitic element definition
-	Rs			=	1e-4/ W * Rs0;                                          	// 	s-terminal resistance [ohms]
-	Rd			=	Rs;                                                     	// 	d-terminal resistance [ohms] For symmetric source and drain Rd = Rs. 
-      //Rd			=	1e-4/ W * Rd0;                                          	// 	d-terminal resistance [ohms] {Uncomment for asymmetric source and drain resistance.}
-    	Cofs			= 	( 0.345e-12/ etov ) * dLg/ 2.0 + Cof; 				// 	s-terminal outer fringing cap [F/cm]
+	Rs				=	1e-4/ W * Rs0;                                          	// 	s-terminal resistance [ohms]
+	Rd				=	Rs;                                                     	// 	d-terminal resistance [ohms] For symmetric source and drain Rd = Rs. 
+    //Rd			=	1e-4/ W * Rd0;                                          	// 	d-terminal resistance [ohms] {Uncomment for asymmetric source and drain resistance.}
+    Cofs			= 	( 0.345e-12/ etov ) * dLg/ 2.0 + Cof; 				// 	s-terminal outer fringing cap [F/cm]
    	Cofd 			= 	( 0.345e-12/ etov ) * dLg/ 2.0 + Cof; 				// 	d-terminal outer fringing cap [F/cm]
 	Leff 			= 	Lgdr - dLg;                                         		// 	Effective channel length [cm]. After subtracting overlap lengths on s and d side 
 	
-    	phit        		=   	$vt(Tjun);                                             		// 	Thermal voltage, kT/q [V]                
-	me			=	(9.1e-31) * mc;                                        		// 	Carrier mass [Kg]
-	n			=	n0 + nd * Vdsi;                                          	// 	Total subthreshold swing factor taking punchthrough into account [unit-less]
+    phit			=   	$vt(Tjun);                                             		// 	Thermal voltage, kT/q [V]                
+	me				=	(9.1e-31) * mc;                                        		// 	Carrier mass [Kg]
+	n				=	n0 + nd * Vdsi;                                          	// 	Total subthreshold swing factor taking punchthrough into account [unit-less]
 	nphit			= 	n * phit;                                           		// 	Product of n and phit [used as one variable]
 	aphit			=	alpha * phit;                                       		// 	Product of alpha and phit [used as one variable]
 
@@ -142,21 +142,21 @@ analog begin
 	//Vcorr is computed using external Vbs and Vgs but internal Vdsi, Qinv and Qinv_corr are computed with uncorrected Vgs, Vbs and corrected Vgs, Vbs respectively.	
 	Vtpcorr			=	Vt0 + gamma * (sqrt(abs(phib - Vbs))- sqrt(phib))- Vdsi * delta;// 	Calculated from extrinsic Vbs
 	eVgpre 			= 	exp(( Vgs - Vtpcorr )/ ( aphit * 1.5 )); 			// 	Calculated from extrinsic Vgs
-    	FFpre 			= 	1.0/ ( 1.0 + eVgpre );						// 	Only used to compute the correction factor
-   	ab			=	2 * ( 1 - 0.99 * FFpre ) * phit;  
-    	Vcorr			=	( 1.0 + 2.0 * delta ) * ( ab/ 2.0 ) * ( exp( -Vdsi/ ab )); 	// 	Correction to intrinsic Vgs
+    FFpre 			= 	1.0/ ( 1.0 + eVgpre );						// 	Only used to compute the correction factor
+   	ab				=	2 * ( 1 - 0.99 * FFpre ) * phit;  
+    Vcorr			=	( 1.0 + 2.0 * delta ) * ( ab/ 2.0 ) * ( exp( -Vdsi/ ab )); 	// 	Correction to intrinsic Vgs
 	Vgscorr			=	Vgsi + Vcorr; 							// 	Intrinsic Vgs corrected (to be used for charge and current computation)
 	Vbscorr			=	Vbsi + Vcorr; 							// 	Intrinsic Vgs corrected (to be used for charge and current computation)
 	Vt0bs			=	Vt0 + gamma * (sqrt( abs( phib - Vbscorr)) - sqrt( phib )); 	// 	Computed from corrected intrinsic Vbs
 	Vt0bs0			=	Vt0 + gamma * (sqrt( abs( phib - Vbsi)) - sqrt( phib )); 	// 	Computed from uncorrected intrinsic Vbs
-	Vtp			=	Vt0bs - Vdsi * delta - 0.5 * aphit; 				// 	Computed from corrected intrinsic Vbs and intrinsic Vds
+	Vtp				=	Vt0bs - Vdsi * delta - 0.5 * aphit; 				// 	Computed from corrected intrinsic Vbs and intrinsic Vds
    	Vtp0			=	Vt0bs0 - Vdsi * delta - 0.5 * aphit; 				// 	Computed from uncorrected intrinsic Vbs and intrinsic Vds
-	eVg			=	exp(( Vgscorr - Vtp )/ ( aphit )); 				// 	Compute eVg factor from corrected intrinsic Vgs
-	FF			=	1.0/ ( 1.0 + eVg );
+	eVg				=	exp(( Vgscorr - Vtp )/ ( aphit )); 				// 	Compute eVg factor from corrected intrinsic Vgs
+	FF				=	1.0/ ( 1.0 + eVg );
 	eVg0			=	exp(( Vgsi - Vtp0 )/ ( aphit )); 				// 	Compute eVg factor from uncorrected intrinsic Vgs
-	FF0			=	1.0/ ( 1.0 + eVg0 );
+	FF0				=	1.0/ ( 1.0 + eVg0 );
 	Qref			=	Cg * nphit;	
-	eta			=	( Vgscorr - ( Vt0bs - Vdsi * delta - FF * aphit ))/ ( nphit ); 	// 	Compute eta factor from corrected intrinsic Vgs and intrinsic Vds
+	eta				=	( Vgscorr - ( Vt0bs - Vdsi * delta - FF * aphit ))/ ( nphit ); 	// 	Compute eta factor from corrected intrinsic Vgs and intrinsic Vds
 	eta0			=	( Vgsi - ( Vt0bs0 - Vdsi * delta - FF * aphit ))/ ( nphit );	//	Compute eta0 factor from uncorrected intrinsic Vgs and internal Vds. 
 													//	Using FF instead of FF0 in eta0 gives smoother capacitances.
 
@@ -218,7 +218,7 @@ analog begin
 	// Modified Fsat for calculation of charge partitioning
 	//DD-NVSAT charge
 	Fsatq			=	abs( Vdsi/ Vdsatq )/ ( pow( 1.0 + pow( abs( Vdsi/ Vdsatq ), beta ), 1.0/ beta ));
-	x			=	1.0 - Fsatq;
+	x				=	1.0 - Fsatq;
 	
 
 	 // MVS 1.0.1 release uses Tsividis model for implementing DD-NVSAT charges. 

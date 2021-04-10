@@ -88,7 +88,6 @@ end
 
 function test()
     
-    str_utils = frontend.VAPP_str_utils();
     uniqID_generator = frontend.VAPP_UniqID_Generator();
 
     % +-----------------------------------------------------------------------+

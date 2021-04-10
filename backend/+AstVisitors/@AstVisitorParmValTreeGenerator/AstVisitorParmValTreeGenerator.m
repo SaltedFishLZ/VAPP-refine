@@ -1,4 +1,4 @@
-classdef AstVisitorParmValTreeGenerator < AstVisitorIrGenerator
+classdef AstVisitorParmValTreeGenerator < AstVisitors.AstVisitorIrGenerator
 % ASTVISITORPARMVALTREEGENERATOR generates IR trees for default values of
 % parameters
 

@@ -1,4 +1,4 @@
-function out_str = VAPP_combine_lines(input_str, parms, str_utils)
+function out_str = VAPP_combine_lines(input_str, parms)
     
     % parms should be a struct, and parms.combine_lines_allow_whitespace should 
     % exist and be either true or false. If true, then a "\" followed by an 
