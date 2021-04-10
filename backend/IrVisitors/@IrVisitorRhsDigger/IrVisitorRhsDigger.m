@@ -34,77 +34,7 @@ classdef IrVisitorRhsDigger < IrVisitor
                 obj.traverseIr(irTree);
             end
         end
-
-        function traverseSub = visitGeneric(thisVisitor, irNode)
-            traverseSub = true;
-        end
-
-        function traverseSub = visitIrNodePotentialFlow(thisVisitor, pfNode)
-        % VISITIRNODEPOTENTIALFLOW
-            traverseSub = false;
-            pfObj = pfNode.getPfObj();
-            lhsPfObj = thisVisitor.lhsPfObj;
-            
-            if isempty(lhsPfObj) == false && pfObj == lhsPfObj
-                thisVisitor.nMatch = thisVisitor.nMatch + 1;
-                thisVisitor.matchedPfNode = pfNode;
-            else
-                thisVisitor.add2PfVec(pfObj);
-            end
-        end
-
-        function traverseSub = visitIrNodeVariable(thisVisitor, varNode)
-            traverseSub = false;
-            varObj = varNode.getVarObj();
-            thisVisitor.add2VarVec(varObj);
-        end
-
-        function traverseSub = visitIrNodeParameter(thisVisitor, parmNode)
-        % VISITIRNODEPARAMETER
-            traverseSub = false;
-            parmObj = parmNode.getParmObj();
-            thisVisitor.add2ParmVec(parmObj);
-        end
-
-        function add2PfVec(thisVisitor, pfObj)
-            if all(thisVisitor.pfVec ~= pfObj)
-                thisVisitor.pfVec = [thisVisitor.pfVec, pfObj];
-            end
-        end
-
-        function add2VarVec(thisVisitor, varObj)
-            if all(thisVisitor.varVec ~= varObj)
-                thisVisitor.varVec = [thisVisitor.varVec, varObj];
-            end
-        end
-
-        function add2ParmVec(thisVisitor, parmObj)
-            if all(thisVisitor.parmVec ~= parmObj)
-                thisVisitor.parmVec = [thisVisitor.parmVec, parmObj];
-            end
-        end
-
-        function nMatch = getNMatch(thisDigger)
-        % GETNMATCH
-            nMatch = thisDigger.nMatch;
-        end
-
-        function mNode = getMatchedPfNode(thisDigger)
-            mNode = thisDigger.matchedPfNode;
-        end
-
-        function pfVec = getPfVec(thisVisitor)
-            pfVec = thisVisitor.pfVec;
-        end
-
-        function varVec = getVarVec(thisVisitor)
-            varVec = thisVisitor.varVec;
-        end
-
-        function parmVec = getParmVec(thisVisitor)
-        % GETPARMVEC
-            parmVec = thisVisitor.parmVec;
-        end
+        
     % end methods
     end
     
