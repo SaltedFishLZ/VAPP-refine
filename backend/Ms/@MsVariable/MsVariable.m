@@ -32,9 +32,7 @@ classdef MsVariable < MsDifferentiable
             end
         end
 
-        function varName = getName(thisVar)
-            varName = thisVar.name;
-        end
+
 
         function label = getLabel(thisVar)
         % GETLABEL
