@@ -57,7 +57,42 @@ classdef AstVisitorIrGenerator < AstVisitors.AstVisitor
                 obj.generateIrTree(astRoot);
             end
         end
+
+        function irTree = traverseAst(thisVisitor, astRoot)
+            nChild = astRoot.get_num_children();
         
+            out = astRoot.accept_visitor(thisVisitor);
+            traverseSub = out{1};
+            irTree = out{2};
+        
+            if isempty(irTree) == false
+                irTree.setPosition(astRoot.get_pos());
+            end
+        
+            if traverseSub == true
+                thisVisitor.traverseChildren(astRoot, irTree);
+            end
+        
+            if astRoot.has_type('root')
+                thisVisitor.endTraversal();
+            end
+        end
+
+        function traverseChildren(thisVisitor, astNode, irNode)
+            nChild = astNode.get_num_children();
+            for i=1:nChild
+                childTree = thisVisitor.traverseAst(astNode.get_child(i));
+                if isempty(childTree) == false
+                    irNode.addChild(childTree);
+                end
+            end
+        end
+        
+        function irTree = generateIrTree(thisVisitor, rootNode)
+            irTree = thisVisitor.traverseAst(rootNode);
+            thisVisitor.irTree = irTree;
+        end
+
         function irTree = getIrTree(thisVisitor)
             irTree = thisVisitor.irTree;
         end
