@@ -1,5 +1,6 @@
 function resetToSavedState(thisNetwork)
 % RESETTOSAVEDSTATE
+    % warning('MsNewtwork: reset to saved state')
     
     % reset the state of terminalFlows
     for nodeObj = thisNetwork.nodeVec

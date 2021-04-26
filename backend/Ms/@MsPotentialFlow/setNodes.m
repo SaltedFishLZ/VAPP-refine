@@ -5,7 +5,9 @@ function setNodes(thisPF, nodeObj1, nodeObj2)
     if nodeObj1.isConnectedTo(nodeObj2) == true
         branchObj = nodeObj1.getBranch(nodeObj2);
     else
-        branchObj = MsBranch(nodeObj1, nodeObj2);
+        % DEBUG: try to resolve circular dependency
+        error('cannot create MsBranch object here!\n');
+        % branchObj = MsBranch(nodeObj1, nodeObj2);
     end
     thisPF.branch = branchObj;
 end

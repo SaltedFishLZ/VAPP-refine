@@ -133,12 +133,17 @@ classdef IrNode < handle & matlab.mixin.Heterogeneous & matlab.mixin.Copyable
         function removeChild(thisNode, childNode)
             childIdx = thisNode.getChildIdx(childNode);
             thisNode.childVec(childIdx) = [];
+            % DEBUG:
+            % It seems set an entry of a vector to empty is very strange
             thisNode.nChild = thisNode.nChild - 1;
         end
 
         function replaceChild(thisNode, oldChildNode, newChildNode)
             childIdx = thisNode.getChildIdx(oldChildNode);
             oldChildNode.removeParent();
+            % DEBUG:
+            % It is unsafe to directly use childIdx without testing
+            % The index can be invalid (e.g., 0 in MATLAB)
             thisNode.childVec(childIdx) = newChildNode;
             newChildNode.setParent(thisNode);
         end
@@ -152,6 +157,12 @@ classdef IrNode < handle & matlab.mixin.Heterogeneous & matlab.mixin.Copyable
 
         function varObj = addVarToModule(thisNode, varLabel, isDerivative)
         % ADDVARTOMODULE
+            % debug:
+            % thisNode.parent can be a null pointer
+            if isempty(thisNode.parent)
+                fprintf('====\n addVarToModule is called but parent is empty');
+                disp(thisNode);
+            end
             if nargin > 2
                 varObj = thisNode.parent.addVarToModule(varLabel, isDerivative);
             else

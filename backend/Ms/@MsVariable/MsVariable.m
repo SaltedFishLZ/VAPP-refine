@@ -28,7 +28,8 @@ classdef MsVariable < MsDifferentiable
             if nargin > 1
                 obj.valTree = valTree;
             else
-                obj.valTree = IrNodeNumerical.getConstantNode(0);
+                % error('cannot create IrNodeNumerical object here!\n');
+                obj.valTree = IrNodeNumericalUtils.getConstantNode(0);
             end
         end
     %end methods
