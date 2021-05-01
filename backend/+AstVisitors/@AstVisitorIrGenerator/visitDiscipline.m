@@ -1,10 +1,11 @@
 function out = visitDiscipline(thisVisitor, discipNode)
     % Don't create a tree node. Just import electrical nodes into the
     % module.
+    % DEBUG: discipline & discip mismatch! very strange
     module = thisVisitor.module;
     discipName = discipNode.get_name();
     nodeList = discipNode.get_attr('terminals');
-    discip = struct();
+    discipline = struct();
     discipline.name = discipName;
     discipline.flow = discipNode.get_attr('flow');
     discipline.potential = discipNode.get_attr('potential');

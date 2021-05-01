@@ -29,7 +29,7 @@ classdef MsVariable < MsDifferentiable
                 obj.valTree = valTree;
             else
                 % error('cannot create IrNodeNumerical object here!\n');
-                obj.valTree = IrNodeNumericalUtils.getConstantNode(0);
+                obj.valTree = utils.getConstantNode(0);
             end
         end
     %end methods
